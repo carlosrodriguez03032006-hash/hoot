@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Pack Éxtasis | Pecado Real</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Montserrat:wght@300;400;700;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+    :root {
+      --rojo: #ff0000;
+      --fucsia: #ff007f;
+      --negro: #070707;
+    }
+
+    body {
+      background: var(--negro);
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    /* ── CANVAS PARTÍCULAS ── */
+    #particles {
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 0; opacity: 0.7;
+    }
+
+    /* ── ORBES DE LUZ ── */
+    .orb {
+      position: fixed; border-radius: 50%;
+      pointer-events: none; z-index: 0;
+      filter: blur(45px);
+    }
+    .orb-1 {
+      width: 600px; height: 600px;
+      top: -200px; left: 50%; transform: translateX(-50%);
+      background: radial-gradient(circle, rgba(100,0,0,0.35), transparent 70%);
+      animation: orbPulse 8s ease-in-out infinite alternate;
+    }
+    .orb-2 {
+      width: 400px; height: 400px;
+      bottom: 10%; right: -100px;
+      background: radial-gradient(circle, rgba(120,0,60,0.3), transparent 70%);
+      animation: orbPulse 10s ease-in-out infinite alternate-reverse;
+    }
+    .orb-3 {
+      width: 300px; height: 300px;
+      top: 40%; left: -80px;
+      background: radial-gradient(circle, rgba(80,0,0,0.25), transparent 70%);
+      animation: orbPulse 7s ease-in-out infinite alternate;
+    }
+    @keyframes orbPulse {
+      0%   { transform: scale(1);   opacity: 0.6; }
+      100% { transform: scale(1.3); opacity: 1;   }
+    }
+
+    /* ── SCAN LINES ── */
+    .scanlines {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background-image: repeating-linear-gradient(
+        0deg, transparent, transparent 2px,
+        rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px
+      );
+    }
+
+    /* ── TOP FADE ── */
+    .top-fade {
+      position: fixed; top: 0; left: 0; right: 0; height: 120px;
+      background: linear-gradient(180deg, rgba(0,0,0,0.8), transparent);
+      pointer-events: none; z-index: 10;
+    }
+
+    /* ── LAYOUT ── */
+    .container { width: 90%; max-width: 1100px; margin: auto; padding: 0 15px; }
+
+    /* ── HEADER ── */
+    header {
+      position: relative; z-index: 20; text-align: center;
+      padding: clamp(50px, 10vh, 90px) 20px 20px;
+      background: radial-gradient(ellipse at top, rgba(60,0,0,0.5), transparent 70%);
+      opacity: 0; transform: translateY(-20px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    header.visible { opacity: 1; transform: translateY(0); }
+
+    .header-line {
+      display: flex; align-items: center; justify-content: center;
+      gap: 16px; margin-bottom: 12px;
+    }
+    .header-line-bar {
+      height: 1px; width: 60px;
+    }
+    .header-line-bar.left  { background: linear-gradient(90deg, transparent, rgba(255,0,0,0.5)); }
+    .header-line-bar.right { background: linear-gradient(90deg, rgba(255,0,0,0.5), transparent); }
+    .header-line span {
+      font-size: 0.65rem; letter-spacing: 6px;
+      color: #444; font-weight: 300;
+    }
+
+    h1 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(2.5rem, 10vw, 5.5rem);
+      letter-spacing: clamp(6px, 3vw, 18px);
+      line-height: 1; color: #fff;
+      text-shadow: 0 0 40px rgba(255,255,255,0.15), 0 0 80px rgba(255,0,0,0.1);
+    }
+    .subtitle {
+      font-size: 0.7rem; font-weight: 700; margin-top: 12px;
+      letter-spacing: 8px; color: var(--rojo);
+      text-shadow: 0 0 12px rgba(255,0,0,0.5);
+      text-transform: uppercase;
+    }
+
+    /* ── HERO FLEX ── */
+    .hero-flex {
+      display: flex; flex-direction: column;
+      align-items: center; gap: 48px;
+      padding: 40px 0; position: relative; z-index: 10;
+    }
+    @media (min-width: 768px) {
+      .hero-flex { flex-direction: row; align-items: flex-start; }
+      .slider-col { width: 42%; flex-shrink: 0; }
+      .info-col   { width: 58%; text-align: left; }
+    }
+    .slider-col { width: 100%; max-width: 420px; }
+    .info-col   { width: 100%; text-align: center; }
+
+    /* ── CARRUSEL ── */
+    .carousel-wrap {
+      position: relative; width: 100%;
+      aspect-ratio: 1/1.1;
+      border-radius: 16px; overflow: hidden;
+      background: radial-gradient(circle at center, rgba(80,0,0,0.4), transparent 70%);
+    }
+    .slide {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: opacity 1.2s ease-in-out;
+    }
+    .slide.active { opacity: 1; z-index: 2; }
+    .slide img {
+      max-width: 100%; max-height: 100%; object-fit: contain;
+      animation: breatheGlow 4s infinite alternate ease-in-out;
+    }
+    @keyframes breatheGlow {
+      0%   { filter: drop-shadow(0 0 15px #ff0000) drop-shadow(0 0 30px rgba(255,0,0,0.4)); transform: scale(0.98); }
+      100% { filter: drop-shadow(0 0 35px #ff007f) drop-shadow(0 0 60px rgba(255,0,127,0.4)); transform: scale(1.02); }
+    }
+    .ring {
+      position: absolute; border-radius: 50%;
+      pointer-events: none; background: transparent;
+    }
+    .ring-1 {
+      top:10%; left:10%; right:10%; bottom:10%;
+      border: 1px solid rgba(255,0,0,0.15);
+      animation: rotateSlow 20s linear infinite;
+    }
+    .ring-2 {
+      top:5%; left:5%; right:5%; bottom:5%;
+      border: 1px dashed rgba(255,0,127,0.1);
+      animation: rotateSlow 30s linear infinite reverse;
+    }
+    @keyframes rotateSlow {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ── INDICADORES ── */
+    .indicators {
+      display: flex; justify-content: center;
+      gap: 8px; margin-top: 16px;
+    }
+    .dot {
+      height: 8px; border-radius: 100px;
+      border: none; cursor: pointer;
+      background: rgba(255,255,255,0.2);
+      transition: width 0.3s, background 0.3s, box-shadow 0.3s;
+      width: 8px; padding: 0;
+    }
+    .dot.active {
+      width: 24px; background: var(--rojo);
+      box-shadow: 0 0 8px var(--rojo);
+    }
+
+    /* ── FLECHA SCROLL ── */
+    .scroll-arrow-wrap {
+      display: flex; flex-direction: column;
+      align-items: center; gap: 6px;
+      margin-top: 28px;
+    }
+    .scroll-arrow-label {
+      font-size: 0.55rem; font-weight: 900;
+      letter-spacing: 5px; color: var(--rojo);
+      text-shadow: 0 0 8px rgba(255,0,0,0.5);
+      text-transform: uppercase;
+    }
+    .scroll-arrow-btn {
+      background: none; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .scroll-arrow-btn svg {
+      filter: drop-shadow(0 0 6px rgba(255,0,0,0.7));
+      animation: bounceArrow 1.4s ease-in-out infinite;
+    }
+    @keyframes bounceArrow {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(6px); }
+    }
+
+    /* ── INFO ── */
+    .badge {
+      display: inline-block; font-size: 0.65rem; font-weight: 900;
+      letter-spacing: 3px; padding: 4px 14px; border-radius: 100px;
+      background: rgba(255,0,0,0.1); border: 1px solid rgba(255,0,0,0.25);
+      color: #ff4444; margin-bottom: 12px; text-transform: uppercase;
+    }
+    h2 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      color: #fff; line-height: 1.1; margin-bottom: 16px;
+      text-shadow: 0 2px 20px rgba(255,0,0,0.2);
+    }
+    h2 .gradient {
+      background: linear-gradient(90deg, var(--rojo), var(--fucsia));
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .desc {
+      color: #777; font-size: clamp(0.95rem, 2vw, 1.1rem);
+      max-width: 440px; margin-bottom: 28px; line-height: 1.7;
+    }
+    .desc em { color: #aaa; font-style: normal; }
+    @media (min-width: 768px) { .desc { margin-left: 0; } }
+
+    /* ── BENEFICIOS ── */
+    .benefits { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+    .benefit {
+      display: flex; align-items: flex-start; gap: 16px;
+      padding: 14px 16px; border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.04);
+      transition: background 0.3s, border 0.3s, transform 0.3s;
+      cursor: default;
+    }
+    .benefit:hover {
+      background: rgba(255,0,0,0.06);
+      border-color: rgba(255,0,0,0.2);
+      transform: translateX(4px);
+    }
+    .benefit-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 2px; }
+    .benefit strong { display: block; font-size: 0.8rem; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; color: #fff; margin-bottom: 4px; }
+    .benefit span   { font-size: 0.85rem; color: #888; }
+
+    /* ── TRUST BADGES ── */
+    .trust-badges { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+    @media (min-width: 768px) { .trust-badges { justify-content: flex-start; } }
+    .trust-badge {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 16px; border-radius: 100px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      font-size: 0.7rem; color: #666; letter-spacing: 1px;
+    }
+
+    /* ── DIVISOR ── */
+    .divider {
+      position: relative; margin: 16px auto;
+      max-width: 1100px;
+    }
+    .divider-line {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,0,0,0.2), transparent);
+    }
+    .divider-dot {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 8px; height: 8px; background: var(--rojo);
+      border-radius: 50%;
+      box-shadow: 0 0 12px var(--rojo), 0 0 24px rgba(255,0,0,0.5);
+    }
+
+    /* ── PRECIO ── */
+    #comprar {
+      position: relative; z-index: 10;
+      padding: 80px 20px 100px; text-align: center;
+      background: linear-gradient(180deg, transparent, rgba(60,0,0,0.3) 50%, rgba(0,0,0,0.9));
+    }
+    .comprar-label {
+      font-size: 0.65rem; font-weight: 900; letter-spacing: 4px;
+      color: #333; margin-bottom: 8px; text-transform: uppercase;
+    }
+
+    /* ── COUNTDOWN ── */
+    .countdown {
+      display: flex; align-items: center; justify-content: center;
+      gap: 8px; margin: 16px 0;
+    }
+    .cd-box {
+      min-width: 56px; padding: 8px 12px;
+      background: rgba(255,255,255,0.03);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 8px; text-align: center;
+    }
+    .cd-number {
+      font-size: 1.5rem; font-weight: 900; font-family: 'Montserrat', monospace;
+      color: var(--rojo); text-shadow: 0 0 10px rgba(255,0,0,0.5);
+    }
+    .cd-label { font-size: 0.6rem; letter-spacing: 3px; color: #444; margin-top: 2px; }
+    .cd-sep { font-size: 1.4rem; font-weight: 900; color: var(--rojo); opacity: 0.6; }
+
+    .price-wrap {
+      display: flex; align-items: flex-start; justify-content: center;
+      gap: 8px; margin: 24px 0;
+    }
+    .price-dollar {
+      font-size: 1.5rem; font-weight: 900; color: #666; margin-top: 12px;
+    }
+    .price-number {
+      font-size: clamp(4rem, 16vw, 7rem); font-weight: 900; line-height: 1;
+      color: #fff;
+      text-shadow: 0 0 30px rgba(255,0,0,0.4), 0 0 60px rgba(255,0,0,0.2);
+    }
+
+    .entrega { font-size: 0.85rem; color: #555; letter-spacing: 2px; margin-bottom: 8px; }
+    .entrega span { color: #888; }
+    .envio { font-size: 0.75rem; color: #444; margin-bottom: 32px; }
+
+    /* ── BOTÓN CTA ── */
+    .btn-cta {
+      position: relative; display: block; width: 100%; max-width: 380px;
+      margin: 0 auto; padding: 22px 48px;
+      border: 1px solid rgba(255,80,80,0.3); border-radius: 100px;
+      background: linear-gradient(90deg, #880000, #ff0000, #cc0033);
+      box-shadow: 0 10px 40px rgba(255,0,0,0.5), 0 0 80px rgba(255,0,0,0.2);
+      color: #fff; font-family: 'Montserrat', sans-serif;
+      font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+      font-weight: 900; letter-spacing: 2px; text-transform: uppercase;
+      cursor: pointer; overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+    }
+    .btn-cta:active { transform: scale(0.96); }
+    .btn-cta::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+      background-size: 200% 100%;
+      animation: shimmer 2s linear infinite;
+    }
+    @keyframes shimmer {
+      0%   { background-position: -200% center; }
+      100% { background-position:  200% center; }
+    }
+    .btn-cta.loading { opacity: 0.6; cursor: not-allowed; }
+
+    .secure-note { font-size: 0.7rem; color: #333; letter-spacing: 1px; margin-top: 16px; }
+
+    /* ── LOADING OVERLAY ── */
+    #loading-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 999;
+      background: rgba(4,0,0,0.97);
+      backdrop-filter: blur(8px);
+      flex-direction: column; align-items: center; justify-content: center;
+      animation: fadeIn 0.3s ease;
+    }
+    #loading-overlay.show { display: flex; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    .spinner-wrap {
+      position: relative; width: 120px; height: 120px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 40px;
+    }
+    .ring-spin {
+      position: absolute; border-radius: 50%;
+      border: 2px solid transparent;
+    }
+    .ring-spin-1 {
+      inset: 0;
+      border-top-color: var(--rojo);
+      border-right-color: rgba(255,0,0,0.3);
+      animation: spin 1s linear infinite;
+    }
+    .ring-spin-2 {
+      inset: 12px;
+      border-top-color: var(--fucsia);
+      border-left-color: rgba(255,0,127,0.3);
+      animation: spinR 1.4s linear infinite;
+    }
+    .ring-spin-3 {
+      inset: 24px; border-width: 1px;
+      border-top-color: rgba(255,100,100,0.6);
+      animation: spin 2s linear infinite;
+    }
+    @keyframes spin  { to { transform: rotate(360deg);  } }
+    @keyframes spinR { to { transform: rotate(-360deg); } }
+
+    .spinner-center {
+      width: 48px; height: 48px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(80,0,0,0.8), rgba(20,0,0,0.9));
+      border: 1px solid rgba(255,0,0,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+    }
+
+    .loading-brand {
+      font-family: 'Cinzel', serif; font-size: 1.4rem; font-weight: 900;
+      letter-spacing: 6px; color: #fff;
+      text-shadow: 0 0 20px rgba(255,0,0,0.3); margin-bottom: 8px;
+    }
+    .loading-step {
+      font-size: 0.8rem; color: #666; letter-spacing: 2px;
+      margin-bottom: 32px; min-height: 1.4em;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .progress-track {
+      width: 220px; height: 3px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 100px; overflow: hidden;
+      margin-bottom: 24px;
+    }
+    .progress-fill {
+      height: 100%; width: 0%; border-radius: 100px;
+      background: linear-gradient(90deg, #880000, var(--rojo), var(--fucsia));
+      transition: width 0.1s linear;
+      box-shadow: 0 0 8px var(--rojo);
+    }
+
+    .dots { display: flex; gap: 8px; }
+    .dot-pulse {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--rojo);
+      animation: dotPulse 1.4s ease-in-out infinite;
+    }
+    .dot-pulse:nth-child(2) { animation-delay: 0.22s; }
+    .dot-pulse:nth-child(3) { animation-delay: 0.44s; }
+    @keyframes dotPulse {
+      0%, 80%, 100% { opacity: 0.2; transform: scale(0.8); }
+      40%            { opacity: 1;   transform: scale(1);   }
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative; z-index: 10;
+      text-align: center; padding: 40px 20px;
+      border-top: 1px solid rgba(255,255,255,0.04);
+      font-size: 0.65rem; letter-spacing: 2px; color: #2a2a2a;
+    }
+  </style>
+</head>
+<body>
+
+<!-- LOADING OVERLAY -->
+<div id="loading-overlay">
+  <div class="spinner-wrap">
+    <div class="ring-spin ring-spin-1"></div>
+    <div class="ring-spin ring-spin-2"></div>
+    <div class="ring-spin ring-spin-3"></div>
+    <div class="spinner-center">🔥</div>
+  </div>
+  <p class="loading-brand">PECADO REAL</p>
+  <p class="loading-step" id="loading-step">Verificando disponibilidad...</p>
+  <div class="progress-track">
+    <div class="progress-fill" id="progress-fill"></div>
+  </div>
+  <div class="dots">
+    <div class="dot-pulse"></div>
+    <div class="dot-pulse"></div>
+    <div class="dot-pulse"></div>
+  </div>
+</div>
+
+<!-- FONDO -->
+<canvas id="particles"></canvas>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+<div class="scanlines"></div>
+<div class="top-fade"></div>
+
+<!-- HEADER -->
+<header id="header">
+  <div class="container">
+    <div class="header-line">
+      <div class="header-line-bar left"></div>
+      <span>EST. 2026</span>
+      <div class="header-line-bar right"></div>
+    </div>
+    <h1>PECADO REAL</h1>
+    <p class="subtitle">Máxima Seducción &amp; Poder</p>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main>
+  <div class="container">
+    <div class="hero-flex">
+
+      <!-- CARRUSEL -->
+      <div class="slider-col">
+        <div class="carousel-wrap">
+          <div class="slide active"><img src="ho.png" alt="Producto 1"></div>
+          <div class="slide"><img src="WhatsApp Image 2026-04-04 at 7.02.39 PM.jpeg" alt="Producto 2"></div>
+          <div class="ring ring-1"></div>
+          <div class="ring ring-2"></div>
+        </div>
+
+        <div class="indicators">
+          <button class="dot active" onclick="goSlide(0)"></button>
+          <button class="dot" onclick="goSlide(1)"></button>
+        </div>
+
+        <div class="scroll-arrow-wrap">
+          <span class="scroll-arrow-label">Comprar</span>
+          <button class="scroll-arrow-btn" onclick="document.getElementById('comprar').scrollIntoView({behavior:'smooth'})" aria-label="Ir a comprar">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+              <circle cx="14" cy="14" r="13" stroke="#ff0000" stroke-width="1.2" stroke-opacity="0.4"/>
+              <path d="M9 11.5L14 17L19 11.5" stroke="#ff0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- INFO -->
+      <div class="info-col">
+        <span class="badge">Pack Éxtasis</span>
+
+        <h2>La Tríada<br><span class="gradient">Perfecta</span></h2>
+
+        <p class="desc">
+          Este Pack fusiona la sensualidad más dulce con la potencia más primitiva.
+          <em> Ella querrá más, tú tendrás más.</em>
+        </p>
+
+        <ul class="benefits">
+          <li class="benefit">
+            <span class="benefit-icon">💋</span>
+            <div><strong>Estimulante</strong><span>Textura gloss de alto impacto que intensifica cada momento.</span></div>
+          </li>
+          <li class="benefit">
+            <span class="benefit-icon">🍓</span>
+            <div><strong>Sabor Prohibido</strong><span>Fresa para juegos orales que despiertan todos los sentidos.</span></div>
+          </li>
+          <li class="benefit">
+            <span class="benefit-icon">⚡</span>
+            <div><strong>Potencia Total</strong><span>Vigor milenario del Shilajit Honey — energía sin límites.</span></div>
+          </li>
+        </ul>
+
+        <div class="trust-badges">
+          <div class="trust-badge">🔒 Discreción Total</div>
+          <div class="trust-badge">🚚 Envío Nacional</div>
+          <div class="trust-badge">💯 Garantía de Calidad</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- DIVISOR -->
+  <div class="divider container">
+    <div class="divider-line"></div>
+    <div class="divider-dot"></div>
+  </div>
+
+  <!-- PRECIO -->
+  <section id="comprar">
+    <div class="container" style="max-width:520px">
+      <p class="comprar-label">Oferta Colombia — Tiempo Limitado</p>
+
+      <div class="countdown">
+        <div class="cd-box"><div class="cd-number" id="cd-h">02</div><div class="cd-label">HRS</div></div>
+        <span class="cd-sep">:</span>
+        <div class="cd-box"><div class="cd-number" id="cd-m">47</div><div class="cd-label">MIN</div></div>
+        <span class="cd-sep">:</span>
+        <div class="cd-box"><div class="cd-number" id="cd-s">33</div><div class="cd-label">SEG</div></div>
+      </div>
+
+      <div class="price-wrap">
+        <span class="price-dollar">$</span>
+        <span class="price-number">149.900</span>
+      </div>
+
+      <p class="entrega"><span>✓</span> Paga Contra Entrega al Recibir 🇨🇴</p>
+      <p class="envio">Envío a todo Colombia · Sin costo adicional</p>
+
+      <button class="btn-cta" id="btn-cta" onclick="handleComprar()">
+        ¡SÍ, LO QUIERO AHORA! 🔥
+      </button>
+
+      <p class="secure-note">Compra 100% segura · Whatsapp directo</p>
+    </div>
+  </section>
+</main>
+
+<footer>&copy; 2026 Sex Love &amp; Shilajit · Expertos en Placer</footer>
+
+<script>
+  /* ── PARTÍCULAS ── */
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  let particles = [], pid = 0;
+  const colors = ['#ff0000','#ff007f','#ff4466','#cc0033','#ff3366'];
+
+  function resizeCanvas() {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  function spawnParticle() {
+    particles.push({
+      id: pid++,
+      x: Math.random() * canvas.width,
+      y: canvas.height + 10,
+      size:   Math.random() * 3 + 1,
+      color:  colors[Math.floor(Math.random() * colors.length)],
+      speedX: (Math.random() - 0.5) * 0.8,
+      speedY: -(Math.random() * 1.5 + 0.5),
+      life:   1
+    });
+  }
+
+  let frame = 0;
+  function loop() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (frame % 4 === 0) spawnParticle();
+    frame++;
+    particles = particles.filter(p => p.life > 0.01);
+    for (const p of particles) {
+      p.x += p.speedX;
+      p.y += p.speedY;
+      p.life -= 0.004;
+      ctx.save();
+      ctx.globalAlpha = p.life * 0.8;
+      ctx.fillStyle = p.color;
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = p.color;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+    requestAnimationFrame(loop);
+  }
+  loop();
+
+  /* ── HEADER ENTRADA ── */
+  setTimeout(() => document.getElementById('header').classList.add('visible'), 100);
+
+  /* ── CARRUSEL ── */
+  const slides = document.querySelectorAll('.slide');
+  const dots   = document.querySelectorAll('.dot');
+  let current  = 0;
+
+  function goSlide(i) {
+    slides[current].classList.remove('active');
+    dots[current].classList.remove('active');
+    current = i;
+    slides[current].classList.add('active');
+    dots[current].classList.add('active');
+  }
+
+  setInterval(() => goSlide((current + 1) % slides.length), 4000);
+
+  /* ── COUNTDOWN ── */
+  let h = 2, m = 47, s = 33;
+  const pad = n => String(n).padStart(2, '0');
+
+  setInterval(() => {
+    s--;
+    if (s < 0) { s = 59; m--; }
+    if (m < 0) { m = 59; h--; }
+    if (h < 0) { h = 23; m = 59; s = 59; }
+    document.getElementById('cd-h').textContent = pad(h);
+    document.getElementById('cd-m').textContent = pad(m);
+    document.getElementById('cd-s').textContent = pad(s);
+  }, 1000);
+
+  /* ── LOADING OVERLAY ── */
+  const steps = [
+    'Verificando disponibilidad...',
+    'Asegurando tu pedido...',
+    'Conectando con asesor...'
+  ];
+
+  function handleComprar() {
+    const overlay = document.getElementById('loading-overlay');
+    const btn     = document.getElementById('btn-cta');
+    const fill    = document.getElementById('progress-fill');
+    const stepEl  = document.getElementById('loading-step');
+
+    btn.classList.add('loading');
+    btn.disabled = true;
+    overlay.classList.add('show');
+
+    let step = 0, progress = 0;
+    const stepTimer = setInterval(() => {
+      step = Math.min(step + 1, steps.length - 1);
+      stepEl.textContent = steps[step];
+    }, 900);
+
+    const progressTimer = setInterval(() => {
+      progress = Math.min(progress + 1, 100);
+      fill.style.width = progress + '%';
+    }, 28);
+
+    setTimeout(() => {
+      clearInterval(stepTimer);
+      clearInterval(progressTimer);
+      window.location.href = 'https://wa.me/57TU_NUMERO';
+    }, 3000);
+  }
+</script>
+</body>
+</html>
