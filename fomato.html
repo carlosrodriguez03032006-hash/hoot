@@ -1,162 +1,271 @@
-<section class="order-form-container" id="formulario-pedido">
-    <div class="container">
-        <div class="form-card">
-            <h3 class="form-title">FINALIZA TU PEDIDO</h3>
-            <p class="form-subtitle">Pagas al recibir en casa 🇨🇴</p>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pecado Real | Experiencia Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Montserrat:wght@300;400;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --rojo-pasion: #ff0000;
+            --negro-absoluto: #050505;
+            --dorado-brillo: rgba(212, 175, 55, 0.4);
+            --vidrio: rgba(15, 15, 15, 0.8);
+        }
 
-            <form id="purchaseForm" class="luxury-form">
-                <div class="input-group">
-                    <label>Nombre Completo</label>
-                    <input type="text" id="nombre" placeholder="Ej: Carlos Rodríguez" required>
-                </div>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            background-color: var(--negro-absoluto);
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
 
-                <div class="input-group">
-                    <label>Número de Celular</label>
-                    <input type="tel" id="telefono" placeholder="300 123 4567" required>
-                </div>
+        /* --- FONDO DINÁMICO --- */
+        .bg-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('WhatsApp Image 2026-04-04 at 8.36.29 PM.jpeg');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.25;
+            z-index: -1;
+            animation: bgZoom 25s infinite alternate ease-in-out;
+        }
 
-                <div class="input-group">
-                    <label>Ciudad / Municipio</label>
-                    <input type="text" id="ciudad" placeholder="Ej: Cali, Valle" required>
-                </div>
+        @keyframes bgZoom {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.15); }
+        }
 
-                <div class="input-group">
-                    <label>Dirección de Entrega</label>
-                    <input type="text" id="direccion" placeholder="Calle, Carrera, Conjunto, Apto" required>
-                </div>
+        .container { width: 92%; max-width: 1200px; margin: auto; }
 
-                <div class="input-group">
-                    <label>Cantidad del Pack</label>
-                    <select id="cantidad">
-                        <option value="1">1 Pack Éxtasis - $149.900</option>
-                        <option value="2">2 Packs (Oferta Duo) - $269.900</option>
-                        <option value="3">3 Packs (Poder Total) - $359.900</option>
-                    </select>
-                </div>
+        /* --- HEADER --- */
+        header {
+            height: 70vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
 
-                <button type="submit" class="btn-send-order">
-                    CONFIRMAR PEDIDO POR WHATSAPP 🔥
-                </button>
-                <p class="disclaimer">🔒 Tus datos están protegidos y el envío es 100% discreto.</p>
-            </form>
+        .reveal { opacity: 0; transform: translateY(30px); transition: 1s all ease; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        .hero-title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(2.5rem, 10vw, 5.5rem);
+            letter-spacing: 12px;
+            text-shadow: 0 0 30px rgba(255, 0, 0, 0.5);
+            margin-bottom: 10px;
+        }
+
+        /* --- TARJETA PRINCIPAL DINÁMICA --- */
+        .main-card {
+            background: var(--vidrio);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 30px;
+            padding: clamp(20px, 5vw, 50px);
+            backdrop-filter: blur(20px);
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 40px;
+            margin-bottom: 100px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        }
+
+        @media (min-width: 900px) {
+            .main-card { grid-template-columns: 1fr 1fr; align-items: center; }
+        }
+
+        /* --- CARRUSEL FADE --- */
+        .carousel-box {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1/1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            opacity: 0;
+            transition: 1s ease-in-out;
+            filter: drop-shadow(0 0 25px var(--rojo-pasion));
+        }
+
+        .slide.active { opacity: 1; transform: scale(1.05); }
+
+        /* --- FORMULARIO ESTILIZADO --- */
+        .form-box h2 { font-family: 'Cinzel'; margin-bottom: 25px; letter-spacing: 3px; color: #fff; }
+
+        .input-row { display: flex; gap: 15px; }
+        .input-group { margin-bottom: 18px; width: 100%; text-align: left; }
+        
+        .input-group label {
+            display: block;
+            font-size: 0.7rem;
+            color: #888;
+            text-transform: uppercase;
+            font-weight: 900;
+            margin-bottom: 6px;
+            letter-spacing: 1px;
+        }
+
+        .input-group input {
+            width: 100%;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid #333;
+            padding: 15px;
+            border-radius: 12px;
+            color: #fff;
+            font-family: 'Montserrat';
+            transition: 0.4s;
+        }
+
+        .input-group input:focus {
+            border-color: var(--rojo-pasion);
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+            outline: none;
+        }
+
+        .btn-confirm {
+            width: 100%;
+            padding: 22px;
+            background: linear-gradient(90deg, #b00, #f00);
+            color: #fff;
+            border: none;
+            border-radius: 100px;
+            font-weight: 900;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: 0.4s;
+            margin-top: 10px;
+        }
+
+        .btn-confirm:hover {
+            transform: scale(1.03);
+            box-shadow: 0 15px 35px rgba(255, 0, 0, 0.4);
+        }
+
+        .badge-co {
+            display: inline-block;
+            background: rgba(255,0,0,0.1);
+            border: 1px dashed rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 0.8rem;
+            color: var(--rojo-pasion);
+            font-weight: 900;
+        }
+
+        footer { padding: 60px; text-align: center; opacity: 0.3; font-size: 0.7rem; }
+    </style>
+</head>
+<body>
+
+    <div class="bg-overlay"></div>
+
+    <header>
+        <div class="container reveal">
+            <h1 class="hero-title">PECADO REAL</h1>
+            <p style="letter-spacing: 8px; color: #666; font-size: 0.8rem;">LUXURY PLEASURE PACK</p>
         </div>
+    </header>
+
+    <div class="container">
+        <main class="main-card reveal">
+            <div class="carousel-box">
+                <img src="ho.png" class="slide active" alt="Pack 1">
+                <img src="WhatsApp Image 2026-04-04 at 7.02.39 PM.jpeg" class="slide" alt="Pack 2">
+            </div>
+
+            <div class="form-box">
+                <div class="badge-co">PAGO CONTRA ENTREGA - COLOMBIA 🇨🇴</div>
+                <h2>TU PEDIDO</h2>
+                
+                <form id="checkoutForm">
+                    <div class="input-group">
+                        <label>Nombre y Apellido</label>
+                        <input type="text" id="nombre" placeholder="Ej: Carlos Rodríguez" required>
+                    </div>
+
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label>Celular</label>
+                            <input type="tel" id="tel" placeholder="310..." required>
+                        </div>
+                        <div class="input-group">
+                            <label>Ciudad</label>
+                            <input type="text" id="ciudad" placeholder="Cali" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Dirección de Entrega</label>
+                        <input type="text" id="dir" placeholder="Calle, barrio y apto" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Correo Electrónico</label>
+                        <input type="email" id="email" placeholder="tu@email.com" required>
+                    </div>
+
+                    <button type="submit" class="btn-confirm">PEDIR AHORA 🔥</button>
+                </form>
+            </div>
+        </main>
     </div>
-</section>
 
-<style>
-/* --- ESTILOS DEL FORMULARIO (COPIA ESTO EN TU CSS) --- */
-.order-form-container {
-    padding: 60px 0;
-    position: relative;
-    z-index: 10;
-}
+    <footer>&copy; 2026 PECADO REAL. TODOS LOS DERECHOS RESERVADOS.</footer>
 
-.form-card {
-    background: rgba(10, 10, 10, 0.8);
-    border: 1px solid #222;
-    padding: clamp(20px, 5vw, 40px);
-    border-radius: 20px;
-    max-width: 600px;
-    margin: auto;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 0 30px rgba(255, 0, 0, 0.1);
-}
+    <script>
+        // --- DINAMISMO: REVELAR AL HACER SCROLL ---
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            reveals.forEach(el => {
+                var windowHeight = window.innerHeight;
+                var elementTop = el.getBoundingClientRect().top;
+                if (elementTop < windowHeight - 100) {
+                    el.classList.add("active");
+                }
+            });
+        }
+        window.addEventListener("scroll", reveal);
+        window.onload = reveal;
 
-.form-title {
-    font-family: 'Cinzel', serif;
-    color: #fff;
-    font-size: 1.8rem;
-    text-align: center;
-    letter-spacing: 3px;
-}
+        // --- DINAMISMO: CARRUSEL AUTOMÁTICO ---
+        let current = 0;
+        const slides = document.querySelectorAll('.slide');
+        setInterval(() => {
+            slides[current].classList.remove('active');
+            current = (current + 1) % slides.length;
+            slides[current].classList.add('active');
+        }, 4000);
 
-.form-subtitle {
-    text-align: center;
-    color: var(--rojo-neon);
-    font-weight: 700;
-    margin-bottom: 30px;
-    font-size: 0.9rem;
-}
+        // --- ENVÍO A WHATSAPP ---
+        document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const n = document.getElementById('nombre').value;
+            const t = document.getElementById('tel').value;
+            const c = document.getElementById('ciudad').value;
+            const d = document.getElementById('dir').value;
+            const m = document.getElementById('email').value;
 
-.luxury-form .input-group {
-    margin-bottom: 20px;
-    text-align: left;
-}
-
-.luxury-form label {
-    display: block;
-    color: #888;
-    font-size: 0.8rem;
-    margin-bottom: 8px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.luxury-form input, 
-.luxury-form select {
-    width: 100%;
-    padding: 15px;
-    background: #151515;
-    border: 1px solid #333;
-    border-radius: 8px;
-    color: #fff;
-    font-family: 'Montserrat', sans-serif;
-    transition: 0.3s;
-}
-
-.luxury-form input:focus {
-    outline: none;
-    border-color: var(--rojo-neon);
-    box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
-}
-
-.btn-send-order {
-    width: 100%;
-    background: linear-gradient(90deg, #b00, #f00);
-    color: #fff;
-    padding: 20px;
-    border: none;
-    border-radius: 50px;
-    font-weight: 900;
-    cursor: pointer;
-    margin-top: 20px;
-    transition: 0.3s;
-    text-transform: uppercase;
-}
-
-.btn-send-order:hover {
-    transform: scale(1.02);
-    box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
-}
-
-.disclaimer {
-    font-size: 0.7rem;
-    color: #444;
-    margin-top: 15px;
-    text-align: center;
-}
-</style>
-
-<script>
-// Lógica para enviar los datos directamente a tu WhatsApp
-document.getElementById('purchaseForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const nombre = document.getElementById('nombre').value;
-    const tel = document.getElementById('telefono').value;
-    const ciudad = document.getElementById('ciudad').value;
-    const dir = document.getElementById('direccion').value;
-    const cant = document.getElementById('cantidad').value;
-
-    const mensaje = `*NUEVO PEDIDO - PECADO REAL*%0A` +
-                    `*Nombre:* ${nombre}%0A` +
-                    `*Teléfono:* ${tel}%0A` +
-                    `*Ciudad:* ${ciudad}%0A` +
-                    `*Dirección:* ${dir}%0A` +
-                    `*Cantidad:* ${cant} Pack(s)`;
-
-    // REEMPLAZA ESTE NÚMERO POR EL TUYO
-    const miWhatsApp = "573000000000"; 
-    window.location.href = `https://wa.me/${miWhatsApp}?text=${mensaje}`;
-});
-</script>
+            const text = `*PECADO REAL - NUEVA ORDEN*%0A👤 *Cliente:* ${n}%0A📱 *Celular:* ${t}%0A📧 *Email:* ${m}%0A📍 *Ciudad:* ${c}%0A🏠 *Dirección:* ${d}%0A🚚 *Envío:* Pago Contra Entrega`;
+            
+            window.location.href = `https://wa.me/573000000000?text=${text}`; // Reemplaza con tu número
+        });
+    </script>
+</body>
+</html>
