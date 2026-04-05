@@ -1,0 +1,162 @@
+<section class="order-form-container" id="formulario-pedido">
+    <div class="container">
+        <div class="form-card">
+            <h3 class="form-title">FINALIZA TU PEDIDO</h3>
+            <p class="form-subtitle">Pagas al recibir en casa 🇨🇴</p>
+
+            <form id="purchaseForm" class="luxury-form">
+                <div class="input-group">
+                    <label>Nombre Completo</label>
+                    <input type="text" id="nombre" placeholder="Ej: Carlos Rodríguez" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Número de Celular</label>
+                    <input type="tel" id="telefono" placeholder="300 123 4567" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Ciudad / Municipio</label>
+                    <input type="text" id="ciudad" placeholder="Ej: Cali, Valle" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Dirección de Entrega</label>
+                    <input type="text" id="direccion" placeholder="Calle, Carrera, Conjunto, Apto" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Cantidad del Pack</label>
+                    <select id="cantidad">
+                        <option value="1">1 Pack Éxtasis - $149.900</option>
+                        <option value="2">2 Packs (Oferta Duo) - $269.900</option>
+                        <option value="3">3 Packs (Poder Total) - $359.900</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-send-order">
+                    CONFIRMAR PEDIDO POR WHATSAPP 🔥
+                </button>
+                <p class="disclaimer">🔒 Tus datos están protegidos y el envío es 100% discreto.</p>
+            </form>
+        </div>
+    </div>
+</section>
+
+<style>
+/* --- ESTILOS DEL FORMULARIO (COPIA ESTO EN TU CSS) --- */
+.order-form-container {
+    padding: 60px 0;
+    position: relative;
+    z-index: 10;
+}
+
+.form-card {
+    background: rgba(10, 10, 10, 0.8);
+    border: 1px solid #222;
+    padding: clamp(20px, 5vw, 40px);
+    border-radius: 20px;
+    max-width: 600px;
+    margin: auto;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.1);
+}
+
+.form-title {
+    font-family: 'Cinzel', serif;
+    color: #fff;
+    font-size: 1.8rem;
+    text-align: center;
+    letter-spacing: 3px;
+}
+
+.form-subtitle {
+    text-align: center;
+    color: var(--rojo-neon);
+    font-weight: 700;
+    margin-bottom: 30px;
+    font-size: 0.9rem;
+}
+
+.luxury-form .input-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.luxury-form label {
+    display: block;
+    color: #888;
+    font-size: 0.8rem;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.luxury-form input, 
+.luxury-form select {
+    width: 100%;
+    padding: 15px;
+    background: #151515;
+    border: 1px solid #333;
+    border-radius: 8px;
+    color: #fff;
+    font-family: 'Montserrat', sans-serif;
+    transition: 0.3s;
+}
+
+.luxury-form input:focus {
+    outline: none;
+    border-color: var(--rojo-neon);
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
+}
+
+.btn-send-order {
+    width: 100%;
+    background: linear-gradient(90deg, #b00, #f00);
+    color: #fff;
+    padding: 20px;
+    border: none;
+    border-radius: 50px;
+    font-weight: 900;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: 0.3s;
+    text-transform: uppercase;
+}
+
+.btn-send-order:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+}
+
+.disclaimer {
+    font-size: 0.7rem;
+    color: #444;
+    margin-top: 15px;
+    text-align: center;
+}
+</style>
+
+<script>
+// Lógica para enviar los datos directamente a tu WhatsApp
+document.getElementById('purchaseForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const nombre = document.getElementById('nombre').value;
+    const tel = document.getElementById('telefono').value;
+    const ciudad = document.getElementById('ciudad').value;
+    const dir = document.getElementById('direccion').value;
+    const cant = document.getElementById('cantidad').value;
+
+    const mensaje = `*NUEVO PEDIDO - PECADO REAL*%0A` +
+                    `*Nombre:* ${nombre}%0A` +
+                    `*Teléfono:* ${tel}%0A` +
+                    `*Ciudad:* ${ciudad}%0A` +
+                    `*Dirección:* ${dir}%0A` +
+                    `*Cantidad:* ${cant} Pack(s)`;
+
+    // REEMPLAZA ESTE NÚMERO POR EL TUYO
+    const miWhatsApp = "573000000000"; 
+    window.location.href = `https://wa.me/${miWhatsApp}?text=${mensaje}`;
+});
+</script>
