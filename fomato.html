@@ -277,29 +277,33 @@
             }, 4000);
         }
 
-        // --- ENVÍO A WHATSAPP ---
+      // --- ENVÍO A WHATSAPP CORREGIDO (DIRECCIÓN COMPLETA Y PAGO) ---
         document.getElementById('checkoutForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            const n = document.getElementById('nombre').value;
-            const t = document.getElementById('tel').value;
-            const c = document.getElementById('ciudad').value;
-            const d = document.getElementById('dir').value;
-            const m = document.getElementById('email').value;
+            // 1. Capturamos los valores exactos
+            const n = document.getElementById('nombre').value.trim();
+            const t = document.getElementById('tel').value.trim();
+            const c = document.getElementById('ciudad').value.trim();
+            const d = document.getElementById('dir').value.trim();
+            const m = document.getElementById('email').value.trim();
 
-            // Mensaje completo incluyendo Pago Contra Entrega
-            const fullMessage = `*PECADO REAL - NUEVA ORDEN*\n\n` +
-                               `👤 *Cliente:* ${n}\n` +
-                               `📱 *Celular:* ${t}\n` +
-                               `📧 *Email:* ${m}\n` +
-                               `📍 *Ciudad:* ${c}\n` +
-                               `🏠 *Dirección:* ${d}\n` +
-                               `🚚 *Envío:* Pago Contra Entrega`;
+            // 2. Construimos el mensaje en una sola variable limpia
+            // Usamos \n para saltos de línea manuales
+            let mensajeWhatsApp = "*PECADO REAL - NUEVA ORDEN*\n\n";
+            mensajeWhatsApp += "👤 *Cliente:* " + n + "\n";
+            mensajeWhatsApp += "📱 *Celular:* " + t + "\n";
+            mensajeWhatsApp += "📧 *Email:* " + m + "\n";
+            mensajeWhatsApp += "📍 *Ciudad:* " + c + "\n";
+            mensajeWhatsApp += "🏠 *Dirección:* " + d + "\n";
+            mensajeWhatsApp += "🚚 *Envío:* Pago Contra Entrega";
+
+            // 3. CODIFICACIÓN ABSOLUTA
+            // Esto es lo que evita que la dirección se corte en "Calle 2a"
+            const textoFinal = encodeURIComponent(mensajeWhatsApp);
             
-            // Codificación segura para que no se corte la dirección con #
-            const encodedText = encodeURIComponent(fullMessage);
-            
-            window.location.href = `https://wa.me/573026204874?text=${encodedText}`; 
+            // 4. Redirección
+            window.location.href = "https://wa.me/573026204874?text=" + textoFinal; 
         });
     </script>
 </body>
