@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Pecado Real | Experiencia Premium</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Montserrat:wght@300;400;900&display=swap" rel="stylesheet">
     <style>
@@ -10,82 +10,90 @@
             --rojo-pasion: #ff0000;
             --negro-absoluto: #050505;
             --dorado-brillo: rgba(212, 175, 55, 0.4);
-            --vidrio: rgba(15, 15, 15, 0.8);
+            --vidrio: rgba(15, 15, 15, 0.9);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         
         body {
             background-color: var(--negro-absoluto);
             color: #fff;
             font-family: 'Montserrat', sans-serif;
             overflow-x: hidden;
-            line-height: 1.6;
+            line-height: 1.4;
         }
 
-        /* --- FONDO DINÁMICO --- */
+        /* --- FONDO --- */
         .bg-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background-image: url('WhatsApp Image 2026-04-04 at 8.36.29 PM.jpeg');
             background-size: cover;
             background-position: center;
-            opacity: 0.25;
+            opacity: 0.2;
             z-index: -1;
-            animation: bgZoom 25s infinite alternate ease-in-out;
         }
 
-        @keyframes bgZoom {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.15); }
-        }
+        .container { width: 94%; max-width: 1100px; margin: auto; }
 
-        .container { width: 92%; max-width: 1200px; margin: auto; }
-
-        /* --- HEADER --- */
+        /* --- HEADER OPTIMIZADO PARA MÓVIL --- */
         header {
-            height: 70vh;
+            height: 55vh; /* Reducido para mostrar inicio de tarjeta */
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
+            position: relative;
         }
-
-        .reveal { opacity: 0; transform: translateY(30px); transition: 1s all ease; }
-        .reveal.active { opacity: 1; transform: translateY(0); }
 
         .hero-title {
             font-family: 'Cinzel', serif;
-            font-size: clamp(2.5rem, 10vw, 5.5rem);
-            letter-spacing: 12px;
-            text-shadow: 0 0 30px rgba(255, 0, 0, 0.5);
-            margin-bottom: 10px;
+            font-size: clamp(2.2rem, 12vw, 5rem);
+            letter-spacing: 8px;
+            text-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
+            margin-bottom: 5px;
         }
 
-        /* --- TARJETA PRINCIPAL DINÁMICA --- */
+        /* FLECHA DE GUÍA */
+        .scroll-arrow {
+            position: absolute;
+            bottom: 20px;
+            font-size: 2rem;
+            color: var(--rojo-pasion);
+            animation: bounce 2s infinite;
+            cursor: pointer;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-10px);}
+            60% {transform: translateY(-5px);}
+        }
+
+        /* --- TARJETA PRINCIPAL --- */
         .main-card {
             background: var(--vidrio);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 30px;
-            padding: clamp(20px, 5vw, 50px);
-            backdrop-filter: blur(20px);
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 40px;
-            margin-bottom: 100px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 25px;
+            padding: 20px;
+            backdrop-filter: blur(15px);
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin-bottom: 50px;
+            box-shadow: 0 0 40px rgba(0,0,0,0.8);
         }
 
         @media (min-width: 900px) {
-            .main-card { grid-template-columns: 1fr 1fr; align-items: center; }
+            .main-card { display: grid; grid-template-columns: 1fr 1fr; align-items: center; padding: 50px; }
         }
 
-        /* --- CARRUSEL FADE --- */
+        /* --- CARRUSEL --- */
         .carousel-box {
             position: relative;
             width: 100%;
-            aspect-ratio: 1/1;
+            height: 300px; /* Altura fija en móvil para evitar saltos */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -97,79 +105,87 @@
             height: 100%;
             object-fit: contain;
             opacity: 0;
-            transition: 1s ease-in-out;
-            filter: drop-shadow(0 0 25px var(--rojo-pasion));
+            transition: 0.8s ease-in-out;
+            filter: drop-shadow(0 0 15px var(--rojo-pasion));
         }
 
-        .slide.active { opacity: 1; transform: scale(1.05); }
+        .slide.active { opacity: 1; transform: scale(1.02); }
 
-        /* --- FORMULARIO ESTILIZADO --- */
-        .form-box h2 { font-family: 'Cinzel'; margin-bottom: 25px; letter-spacing: 3px; color: #fff; }
+        /* --- FORMULARIO OPTIMIZADO --- */
+        .form-box h2 { 
+            font-family: 'Cinzel'; 
+            margin-bottom: 20px; 
+            font-size: 1.5rem; 
+            text-align: center;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
 
-        .input-row { display: flex; gap: 15px; }
-        .input-group { margin-bottom: 18px; width: 100%; text-align: left; }
+        .input-row { display: flex; flex-direction: column; gap: 0; }
+        @media (min-width: 600px) { .input-row { flex-direction: row; gap: 15px; } }
+
+        .input-group { margin-bottom: 15px; width: 100%; }
         
         .input-group label {
             display: block;
-            font-size: 0.7rem;
-            color: #888;
+            font-size: 0.75rem;
+            color: #bbb;
             text-transform: uppercase;
-            font-weight: 900;
-            margin-bottom: 6px;
-            letter-spacing: 1px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            padding-left: 5px;
         }
 
         .input-group input {
             width: 100%;
-            background: rgba(0,0,0,0.5);
-            border: 1px solid #333;
-            padding: 15px;
+            background: #111;
+            border: 1px solid #444;
+            padding: 16px; /* Más grande para dedos */
             border-radius: 12px;
             color: #fff;
+            font-size: 16px; /* Evita zoom automático en iPhone */
             font-family: 'Montserrat';
-            transition: 0.4s;
         }
 
         .input-group input:focus {
             border-color: var(--rojo-pasion);
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
             outline: none;
+            background: #150000;
         }
 
         .btn-confirm {
             width: 100%;
-            padding: 22px;
-            background: linear-gradient(90deg, #b00, #f00);
+            padding: 20px;
+            background: linear-gradient(90deg, #900, #f00);
             color: #fff;
             border: none;
-            border-radius: 100px;
+            border-radius: 15px;
             font-weight: 900;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
             cursor: pointer;
-            transition: 0.4s;
             margin-top: 10px;
-        }
-
-        .btn-confirm:hover {
-            transform: scale(1.03);
-            box-shadow: 0 15px 35px rgba(255, 0, 0, 0.4);
+            box-shadow: 0 10px 20px rgba(255, 0, 0, 0.3);
         }
 
         .badge-co {
-            display: inline-block;
-            background: rgba(255,0,0,0.1);
-            border: 1px dashed rgba(255,255,255,0.2);
-            padding: 10px 20px;
-            border-radius: 10px;
+            text-align: center;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--rojo-pasion);
+            padding: 8px;
+            border-radius: 8px;
             margin-bottom: 20px;
-            font-size: 0.8rem;
-            color: var(--rojo-pasion);
-            font-weight: 900;
+            font-size: 0.75rem;
+            color: #fff;
+            font-weight: 700;
         }
 
-        footer { padding: 60px; text-align: center; opacity: 0.3; font-size: 0.7rem; }
+        footer { padding: 40px; text-align: center; opacity: 0.5; font-size: 0.65rem; }
+
+        /* Animación de entrada */
+        .reveal { opacity: 0; transform: translateY(20px); transition: 0.8s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
     </style>
 </head>
 <body>
@@ -179,11 +195,12 @@
     <header>
         <div class="container reveal">
             <h1 class="hero-title">PECADO REAL</h1>
-            <p style="letter-spacing: 8px; color: #666; font-size: 0.8rem;">LUXURY PLEASURE PACK</p>
+            <p style="letter-spacing: 4px; color: #aaa; font-size: 0.7rem; font-weight: 900;">LUXURY PLEASURE PACK</p>
         </div>
+        <div class="scroll-arrow" onclick="document.getElementById('pedido').scrollIntoView({behavior: 'smooth'})">↓</div>
     </header>
 
-    <div class="container">
+    <div class="container" id="pedido">
         <main class="main-card reveal">
             <div class="carousel-box">
                 <img src="imagen1.jpeg" class="slide active" alt="Pack 1">
@@ -191,52 +208,52 @@
             </div>
 
             <div class="form-box">
-                <div class="badge-co">PAGO CONTRA ENTREGA - COLOMBIA 🇨🇴</div>
-                <h2>TU PEDIDO</h2>
+                <div class="badge-co">🇨🇴 PAGO CONTRA ENTREGA DISPONIBLE</div>
+                <h2>DATOS DE ENVÍO</h2>
                 
                 <form id="checkoutForm">
                     <div class="input-group">
-                        <label>Nombre y Apellido</label>
+                        <label>Nombre Completo</label>
                         <input type="text" id="nombre" placeholder="Ej: Carlos Rodríguez" required>
                     </div>
 
                     <div class="input-row">
                         <div class="input-group">
-                            <label>Celular</label>
+                            <label>Celular / WhatsApp</label>
                             <input type="tel" id="tel" placeholder="310..." required>
                         </div>
                         <div class="input-group">
-                            <label>Ciudad</label>
-                            <input type="text" id="ciudad" placeholder="Cali" required>
+                            <label>Ciudad / Municipio</label>
+                            <input type="text" id="ciudad" placeholder="Ej: Cali" required>
                         </div>
                     </div>
 
                     <div class="input-group">
-                        <label>Dirección de Entrega</label>
-                        <input type="text" id="dir" placeholder="Calle, barrio y apto" required>
+                        <label>Dirección Exacta</label>
+                        <input type="text" id="dir" placeholder="Calle, barrio, apto o casa" required>
                     </div>
 
                     <div class="input-group">
-                        <label>Correo Electrónico</label>
+                        <label>Tu Correo (Para seguimiento)</label>
                         <input type="email" id="email" placeholder="tu@email.com" required>
                     </div>
 
-                    <button type="submit" class="btn-confirm">PEDIR AHORA 🔥</button>
+                    <button type="submit" class="btn-confirm">COMPLETAR PEDIDO 🔥</button>
                 </form>
             </div>
         </main>
     </div>
 
-    <footer>&copy; 2026 PECADO REAL. TODOS LOS DERECHOS RESERVADOS.</footer>
+    <footer>&copy; 2026 PECADO REAL. <br> DESTILANDO DESEO EN TODA COLOMBIA.</footer>
 
     <script>
-        // --- DINAMISMO: REVELAR AL HACER SCROLL ---
+        // --- REVELAR ELEMENTOS ---
         function reveal() {
             var reveals = document.querySelectorAll(".reveal");
             reveals.forEach(el => {
                 var windowHeight = window.innerHeight;
                 var elementTop = el.getBoundingClientRect().top;
-                if (elementTop < windowHeight - 100) {
+                if (elementTop < windowHeight - 50) {
                     el.classList.add("active");
                 }
             });
@@ -244,14 +261,16 @@
         window.addEventListener("scroll", reveal);
         window.onload = reveal;
 
-        // --- DINAMISMO: CARRUSEL AUTOMÁTICO ---
+        // --- CARRUSEL AUTOMÁTICO ---
         let current = 0;
         const slides = document.querySelectorAll('.slide');
-        setInterval(() => {
-            slides[current].classList.remove('active');
-            current = (current + 1) % slides.length;
-            slides[current].classList.add('active');
-        }, 4000);
+        if(slides.length > 0) {
+            setInterval(() => {
+                slides[current].classList.remove('active');
+                current = (current + 1) % slides.length;
+                slides[current].classList.add('active');
+            }, 3500);
+        }
 
         // --- ENVÍO A WHATSAPP ---
         document.getElementById('checkoutForm').addEventListener('submit', function(e) {
@@ -264,7 +283,7 @@
 
             const text = `*PECADO REAL - NUEVA ORDEN*%0A👤 *Cliente:* ${n}%0A📱 *Celular:* ${t}%0A📧 *Email:* ${m}%0A📍 *Ciudad:* ${c}%0A🏠 *Dirección:* ${d}%0A🚚 *Envío:* Pago Contra Entrega`;
             
-            window.location.href = `https://wa.me/573026204874?text=${text}`; // Reemplaza con tu número
+            window.location.href = `https://wa.me/573026204874?text=${text}`; 
         });
     </script>
 </body>
