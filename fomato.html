@@ -10,7 +10,7 @@
             --rojo-pasion: #ff0000;
             --negro-absoluto: #050505;
             --dorado-brillo: rgba(212, 175, 55, 0.4);
-            --vidrio: rgba(15, 15, 15, 0.9);
+            --vidrio: rgba(15, 15, 15, 0.95);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -23,7 +23,7 @@
             line-height: 1.4;
         }
 
-        /* --- FONDO --- */
+        /* --- FONDO DINÁMICO --- */
         .bg-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -32,13 +32,19 @@
             background-position: center;
             opacity: 0.2;
             z-index: -1;
+            animation: bgZoom 25s infinite alternate ease-in-out;
+        }
+
+        @keyframes bgZoom {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
         }
 
         .container { width: 94%; max-width: 1100px; margin: auto; }
 
-        /* --- HEADER OPTIMIZADO PARA MÓVIL --- */
+        /* --- HEADER OPTIMIZADO --- */
         header {
-            height: 55vh; /* Reducido para mostrar inicio de tarjeta */
+            height: 60vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -55,14 +61,14 @@
             margin-bottom: 5px;
         }
 
-        /* FLECHA DE GUÍA */
         .scroll-arrow {
             position: absolute;
-            bottom: 20px;
+            bottom: 30px;
             font-size: 2rem;
             color: var(--rojo-pasion);
             animation: bounce 2s infinite;
             cursor: pointer;
+            text-shadow: 0 0 10px var(--rojo-pasion);
         }
 
         @keyframes bounce {
@@ -76,13 +82,13 @@
             background: var(--vidrio);
             border: 1px solid rgba(255,255,255,0.1);
             border-radius: 25px;
-            padding: 20px;
+            padding: 25px;
             backdrop-filter: blur(15px);
             display: flex;
             flex-direction: column;
             gap: 30px;
-            margin-bottom: 50px;
-            box-shadow: 0 0 40px rgba(0,0,0,0.8);
+            margin-bottom: 80px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.9);
         }
 
         @media (min-width: 900px) {
@@ -93,7 +99,7 @@
         .carousel-box {
             position: relative;
             width: 100%;
-            height: 300px; /* Altura fija en móvil para evitar saltos */
+            height: 350px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -109,82 +115,81 @@
             filter: drop-shadow(0 0 15px var(--rojo-pasion));
         }
 
-        .slide.active { opacity: 1; transform: scale(1.02); }
+        .slide.active { opacity: 1; transform: scale(1.05); }
 
-        /* --- FORMULARIO OPTIMIZADO --- */
+        /* --- FORMULARIO --- */
         .form-box h2 { 
             font-family: 'Cinzel'; 
             margin-bottom: 20px; 
-            font-size: 1.5rem; 
+            font-size: 1.6rem; 
             text-align: center;
-            border-bottom: 1px solid #333;
-            padding-bottom: 10px;
+            letter-spacing: 2px;
         }
 
-        .input-row { display: flex; flex-direction: column; gap: 0; }
+        .input-row { display: flex; flex-direction: column; }
         @media (min-width: 600px) { .input-row { flex-direction: row; gap: 15px; } }
 
-        .input-group { margin-bottom: 15px; width: 100%; }
+        .input-group { margin-bottom: 15px; width: 100%; text-align: left; }
         
         .input-group label {
             display: block;
-            font-size: 0.75rem;
-            color: #bbb;
+            font-size: 0.7rem;
+            color: #888;
             text-transform: uppercase;
-            font-weight: 700;
-            margin-bottom: 8px;
-            padding-left: 5px;
+            font-weight: 900;
+            margin-bottom: 6px;
+            letter-spacing: 1px;
         }
 
         .input-group input {
             width: 100%;
-            background: #111;
-            border: 1px solid #444;
-            padding: 16px; /* Más grande para dedos */
+            background: #000;
+            border: 1px solid #333;
+            padding: 16px;
             border-radius: 12px;
             color: #fff;
-            font-size: 16px; /* Evita zoom automático en iPhone */
+            font-size: 16px;
             font-family: 'Montserrat';
+            transition: 0.3s;
         }
 
         .input-group input:focus {
             border-color: var(--rojo-pasion);
             outline: none;
-            background: #150000;
+            box-shadow: 0 0 10px rgba(255,0,0,0.2);
         }
 
         .btn-confirm {
             width: 100%;
-            padding: 20px;
+            padding: 22px;
             background: linear-gradient(90deg, #900, #f00);
             color: #fff;
             border: none;
-            border-radius: 15px;
+            border-radius: 50px;
             font-weight: 900;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             cursor: pointer;
-            margin-top: 10px;
-            box-shadow: 0 10px 20px rgba(255, 0, 0, 0.3);
+            margin-top: 15px;
+            box-shadow: 0 10px 25px rgba(255, 0, 0, 0.4);
         }
 
         .badge-co {
             text-align: center;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid var(--rojo-pasion);
-            padding: 8px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 0.75rem;
+            background: rgba(255,0,0,0.1);
+            border: 1px dashed var(--rojo-pasion);
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            font-size: 0.8rem;
             color: #fff;
-            font-weight: 700;
+            font-weight: 900;
         }
 
-        footer { padding: 40px; text-align: center; opacity: 0.5; font-size: 0.65rem; }
+        footer { padding: 40px; text-align: center; opacity: 0.4; font-size: 0.7rem; letter-spacing: 2px; }
 
-        /* Animación de entrada */
-        .reveal { opacity: 0; transform: translateY(20px); transition: 0.8s ease-out; }
+        .reveal { opacity: 0; transform: translateY(30px); transition: 1s all ease; }
         .reveal.active { opacity: 1; transform: translateY(0); }
     </style>
 </head>
@@ -195,12 +200,12 @@
     <header>
         <div class="container reveal">
             <h1 class="hero-title">PECADO REAL</h1>
-            <p style="letter-spacing: 4px; color: #aaa; font-size: 0.7rem; font-weight: 900;">LUXURY PLEASURE PACK</p>
+            <p style="letter-spacing: 6px; color: #666; font-size: 0.75rem; font-weight: 900;">LUXURY PLEASURE PACK</p>
         </div>
-        <div class="scroll-arrow" onclick="document.getElementById('pedido').scrollIntoView({behavior: 'smooth'})">↓</div>
+        <div class="scroll-arrow" onclick="document.getElementById('seccion-pedido').scrollIntoView({behavior: 'smooth'})">↓</div>
     </header>
 
-    <div class="container" id="pedido">
+    <div class="container" id="seccion-pedido">
         <main class="main-card reveal">
             <div class="carousel-box">
                 <img src="imagen1.jpeg" class="slide active" alt="Pack 1">
@@ -208,52 +213,52 @@
             </div>
 
             <div class="form-box">
-                <div class="badge-co">🇨🇴 PAGO CONTRA ENTREGA DISPONIBLE</div>
-                <h2>DATOS DE ENVÍO</h2>
+                <div class="badge-co">🇨🇴 PAGO CONTRA ENTREGA - COLOMBIA</div>
+                <h2>ORDENAR AHORA</h2>
                 
                 <form id="checkoutForm">
                     <div class="input-group">
-                        <label>Nombre Completo</label>
+                        <label>Nombre y Apellido</label>
                         <input type="text" id="nombre" placeholder="Ej: Carlos Rodríguez" required>
                     </div>
 
                     <div class="input-row">
                         <div class="input-group">
-                            <label>Celular / WhatsApp</label>
+                            <label>Celular</label>
                             <input type="tel" id="tel" placeholder="310..." required>
                         </div>
                         <div class="input-group">
-                            <label>Ciudad / Municipio</label>
-                            <input type="text" id="ciudad" placeholder="Ej: Cali" required>
+                            <label>Ciudad</label>
+                            <input type="text" id="ciudad" placeholder="Cali" required>
                         </div>
                     </div>
 
                     <div class="input-group">
-                        <label>Dirección Exacta</label>
-                        <input type="text" id="dir" placeholder="Calle, barrio, apto o casa" required>
+                        <label>Dirección de Entrega</label>
+                        <input type="text" id="dir" placeholder="Calle, barrio, casa o apto" required>
                     </div>
 
                     <div class="input-group">
-                        <label>Tu Correo (Para seguimiento)</label>
+                        <label>Correo Electrónico</label>
                         <input type="email" id="email" placeholder="tu@email.com" required>
                     </div>
 
-                    <button type="submit" class="btn-confirm">COMPLETAR PEDIDO 🔥</button>
+                    <button type="submit" class="btn-confirm">PEDIR POR WHATSAPP 🔥</button>
                 </form>
             </div>
         </main>
     </div>
 
-    <footer>&copy; 2026 PECADO REAL. <br> DESTILANDO DESEO EN TODA COLOMBIA.</footer>
+    <footer>&copy; 2026 PECADO REAL. TODOS LOS DERECHOS RESERVADOS.</footer>
 
     <script>
-        // --- REVELAR ELEMENTOS ---
+        // --- REVELAR AL HACER SCROLL ---
         function reveal() {
             var reveals = document.querySelectorAll(".reveal");
             reveals.forEach(el => {
                 var windowHeight = window.innerHeight;
                 var elementTop = el.getBoundingClientRect().top;
-                if (elementTop < windowHeight - 50) {
+                if (elementTop < windowHeight - 100) {
                     el.classList.add("active");
                 }
             });
@@ -269,21 +274,32 @@
                 slides[current].classList.remove('active');
                 current = (current + 1) % slides.length;
                 slides[current].classList.add('active');
-            }, 3500);
+            }, 4000);
         }
 
         // --- ENVÍO A WHATSAPP ---
         document.getElementById('checkoutForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            
             const n = document.getElementById('nombre').value;
             const t = document.getElementById('tel').value;
             const c = document.getElementById('ciudad').value;
             const d = document.getElementById('dir').value;
             const m = document.getElementById('email').value;
 
-            const text = `*PECADO REAL - NUEVA ORDEN*%0A👤 *Cliente:* ${n}%0A📱 *Celular:* ${t}%0A📧 *Email:* ${m}%0A📍 *Ciudad:* ${c}%0A🏠 *Dirección:* ${d}%0A🚚 *Envío:* Pago Contra Entrega`;
+            // Mensaje completo incluyendo Pago Contra Entrega
+            const fullMessage = `*PECADO REAL - NUEVA ORDEN*\n\n` +
+                               `👤 *Cliente:* ${n}\n` +
+                               `📱 *Celular:* ${t}\n` +
+                               `📧 *Email:* ${m}\n` +
+                               `📍 *Ciudad:* ${c}\n` +
+                               `🏠 *Dirección:* ${d}\n` +
+                               `🚚 *Envío:* Pago Contra Entrega`;
             
-            window.location.href = `https://wa.me/573026204874?text=${text}`; 
+            // Codificación segura para que no se corte la dirección con #
+            const encodedText = encodeURIComponent(fullMessage);
+            
+            window.location.href = `https://wa.me/573026204874?text=${encodedText}`; 
         });
     </script>
 </body>
